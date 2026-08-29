@@ -5,11 +5,16 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.navegacao{
+.favorite-person{
     border-bottom: 1px solid;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
+    padding: 10px 40px;
 }
 
+.favorite-person-lista{
+    display: flex;
+    list-style: none;
+    gap: 50px;
+}
