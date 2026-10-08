@@ -134,10 +134,9 @@
 }
 
 .categorias img {
-    width: 200px;
-    height: 200px;
+    width: 65px;
+    height: 65px;
     object-fit: contain;
-    overflow: hidden;
 }
 
 .categorias h2 {
@@ -155,24 +154,28 @@
 .content-destaque {
     position: relative;
     display: grid;
-    grid-template-columns: 45px 1fr 45px;
-    grid-template-rows: auto 280px auto;
+    grid-template-columns: 55px minmax(0, 1fr) 55px;
+    grid-template-rows: auto 370px auto;
     align-items: center;
-    gap: 15px;
+    column-gap: 15px;
+    row-gap: 15px;
 }
 
 .content-destaque > h1 {
-    grid-column: 1 / -1;
+    grid-column: 1 / 4;
+    grid-row: 1;
+    margin: 0 0 5px;
 }
 
 .card-destaque {
     grid-column: 2;
     grid-row: 2;
-    min-height: 280px;
+    width: 100%;
+    height: 370px;
     display: flex;
     align-items: center;
     padding: 30px;
-    gap: 40px;
+    gap: 45px;
     background: linear-gradient(135deg, var(--card), #202955);
     border: 1px solid var(--borda);
     border-radius: 20px;
@@ -180,8 +183,9 @@
 }
 
 .card-destaque > img {
-    width: 230px;
-    height: 230px;
+    width: 300px;
+    height: 300px;
+    flex-shrink: 0;
     object-fit: contain;
     background-color: var(--fundo);
     border-radius: 15px;
@@ -189,11 +193,11 @@
 
 .info-destaque {
     flex: 1;
-    margin-top: -20px;
+    min-width: 0;
 }
 
 .info-destaque h3 {
-    font-size: 30px;
+    font-size: 32px;
     margin-bottom: 5px;
 }
 
@@ -267,11 +271,11 @@
 
 .indicadores {
     grid-column: 2;
+    grid-row: 3;
     display: flex;
     justify-content: center;
     gap: 8px;
-    margin-top: 10px;
-    grid-row: 3;
+    margin-top: 0;
 }
 
 .bolinha {
