@@ -43,62 +43,99 @@ const digimons = [
 
 let digimonAtual = 0;
 
-//elementos da pagina
+// elementos da pagina inicial
+
 const botaoAnterior = document.querySelector(".botao-anterior");
 const botaoProximo = document.querySelector(".botao-proximo");
 
-const imagem = document.querySelector(".card-destaque > img");
-const nome = document.querySelector(".info-destaque h3");
-const id = document.querySelector(".info-destaque .id-digimon");
-const nivel = document.querySelector(".info-destaque .cat-digimon");
-const tipo = document.querySelector(".tipo-digimon");
-const areas = document.querySelector(".areas-digimon");
-const descricao = document.querySelector(".descr-digimon");
+if (botaoAnterior && botaoProximo) {
+    const imagem = document.querySelector(".card-destaque > img");
+    const nome = document.querySelector(".info-destaque h3");
+    const id = document.querySelector(".info-destaque .id-digimon");
+    const nivel = document.querySelector(".info-destaque .cat-digimon");
+    const tipo = document.querySelector(".tipo-digimon");
+    const areas = document.querySelector(".areas-digimon");
+    const descricao = document.querySelector(".descr-digimon");
+    const habilidades = document.querySelectorAll(".habilidade");
+    const indicadores = document.querySelectorAll(".bolinha");
 
-const habilidades = document.querySelectorAll(".habilidade");
-const indicadores = document.querySelectorAll(".bolinha");
+    // funcao para atualizar as informacoes do destaque
+    function atualizarDigimon() {
+        const digimon = digimons[digimonAtual];
 
-//funcao para atualizar as informacoes que sao exibidas no card de destaque
-function atualizarDigimon() {
-    const digimon = digimons[digimonAtual];
+        imagem.src = digimon.imagem;
+        imagem.alt = digimon.nome;
 
-    imagem.src = digimon.imagem;
-    imagem.alt = digimon.nome;
+        nome.textContent = digimon.nome;
+        id.textContent = digimon.id;
+        nivel.textContent = "Nível: " + digimon.nivel;
+        tipo.textContent = "Tipo: " + digimon.tipo;
+        areas.textContent = "Áreas: " + digimon.areas;
+        descricao.textContent = digimon.descricao;
 
-    nome.textContent = digimon.nome;
-    id.textContent = digimon.id;
-    nivel.textContent = "Nível: " + digimon.nivel;
-    tipo.textContent = "Tipo: " + digimon.tipo;
-    areas.textContent = "Áreas: " + digimon.areas;
-    descricao.textContent = digimon.descricao;
+        habilidades.forEach((habilidade, indice) => {
+            habilidade.querySelector("h5").textContent = digimon.habilidades[indice][0];
+            habilidade.querySelector("p").textContent = digimon.habilidades[indice][1];
+        });
 
-    habilidades.forEach((habilidade, indice) => {
-        habilidade.querySelector("h5").textContent = digimon.habilidades[indice][0];
+        indicadores.forEach((bolinha, indice) => {
+            bolinha.classList.toggle(
+                "ativa",
+                indice === digimonAtual
+            );
+        });
+    }
 
-        habilidade.querySelector("p").textContent = digimon.habilidades[indice][1];
+    // botao proximo
+    botaoProximo.addEventListener("click", () => {
+        digimonAtual++;
+        if (digimonAtual >= digimons.length) {
+            digimonAtual = 0;
+        }
+        atualizarDigimon();
     });
 
-    indicadores.forEach((bolinha, indice) => {
-        bolinha.classList.toggle("ativa", indice === digimonAtual);
+    //botao anterior
+    botaoAnterior.addEventListener("click", () => {
+        digimonAtual--;
+        if (digimonAtual < 0) {
+            digimonAtual = digimons.length - 1;
+        }
+        atualizarDigimon();
     });
 }
 
-//botao de proximo no card de destaque
-botaoProximo.addEventListener("click", () => {
-    digimonAtual++;
+const parametroId = new URLSearchParams(window.location.search).get("id");
 
-    if (digimonAtual >= digimons.length) {
-        digimonAtual = 0;
+if (parametroId) {
+    const digimonDetalhes = digimons.find(digimon => digimon.id === "#" + parametroId);
+
+    if (digimonDetalhes) {
+        const imagemDetalhes = document.querySelector(".imagem-digimon img");
+        const nomeDetalhes = document.querySelector(".informacoes-digimon h2");
+        const idDetalhes = document.querySelector(".informacoes-digimon .id-digimon");
+        const nivelDetalhes = document.querySelector(".informacoes-digimon .nivel-digimon");
+        const tipoDetalhes = document.querySelector(".informacoes-digimon .tipo-digimon");
+        const areasDetalhes = document.querySelector(".informacoes-digimon .areas-digimon");
+        const descricaoDetalhes = document.querySelector(".descricao-digimon p");
+        const habilidadesDetalhes = document.querySelectorAll(".habilidades-digimon .habilidade");
+
+        imagemDetalhes.src = digimonDetalhes.imagem;
+        imagemDetalhes.alt = digimonDetalhes.nome;
+        nomeDetalhes.textContent = digimonDetalhes.nome;
+        idDetalhes.textContent = digimonDetalhes.id;
+        nivelDetalhes.textContent = "Nível: " + digimonDetalhes.nivel;
+        tipoDetalhes.textContent = "Tipo: " + digimonDetalhes.tipo;
+        areasDetalhes.textContent = "Áreas: " + digimonDetalhes.areas;
+
+        descricaoDetalhes.textContent =
+            digimonDetalhes.descricao;
+
+        habilidadesDetalhes.forEach((habilidade, indice) => {
+            if (digimonDetalhes.habilidades[indice]) {
+                habilidade.querySelector("h3").textContent = digimonDetalhes.habilidades[indice][0];
+                habilidade.querySelector("p").textContent = digimonDetalhes.habilidades[indice][1];
+            }
+        });
     }
-    atualizarDigimon();
-});
-
-//botao de anterior no card de destaque
-botaoAnterior.addEventListener("click", () => {
-    digimonAtual--;
-
-    if (digimonAtual < 0) {
-        digimonAtual = digimons.length - 1;
-    }
-    atualizarDigimon();
-});
+}
