@@ -1,61 +1,42 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
-    <link rel="stylesheet" href="css/index/global.css">
-    <link rel="stylesheet" href="css/categorias/categorias.css">
-    <link rel="stylesheet" href="css/categorias/responsivo.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"/>
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/categorias/categorias.css" />
+    <link rel="stylesheet" href="css/categorias/responsivo.css" />
     <title>Categorias</title>
-    <link rel="icon" type="image/png" href="assets/logo_aba_site/logo.png">
-</head>
-<body>
+    <link rel="icon" type="image/png" href="assets/logo_aba_site/logo.png" />
+  </head>
+  <body>
     <header class="cabecalho-categorias">
-        <a href="#index.html" class="material-symbols-outlined"></a>
-        <h1>Digi-analyzer</h1>
-        <span class="material-symbols-outlined">category</span>
+      <a href="index.html" class="material-symbols-outlined" aria-label="Voltar para a página inicial" >arrow_back</a>
+      <h1>Digi-Analyzer</h1>
+      <span class="material-symbols-outlined">category</span>
     </header>
 
     <main class="pagina-categorias">
-        <section class="introducao-categorias">
-            <h2>Explore os Digimons</h2>
-            <p>Escolha uma categoria para encontrar Digimons do nível desejado</p>
-        </section>
+      <section class="introducao-categorias">
+        <h2 id="titulo-categoria">Digimons</h2>
+        <p id="descricao-categoria">Confira os Digimons desta categoria.</p>
+      </section>
 
-        <section class="lista-categorias">
-            <a href="index.html?nivel=todos" class="card-categoria">
-                <img src="./assets/categorias/todos.png" alt="">
-                <h2>Todos</h2>
-                <p>Explore todos os Digimons disponíveis.</p>
-            </a>
+      <section class="lista-categorias" aria-label="Lista de Digimons">
 
-            <a href="index.html?nivel=rookie" class="card-categoria">
-                <img src="./assets/categorias/rookie.png" alt="">
-                <h2>Rookie</h2>
-                <p>Conheça os Digimons desse nível.</p>
-            </a>
+    </section>
 
-            <a href="index.html?nivel=champion" class="card-categoria">
-                <img src="./assets/categorias/champion.png" alt="">
-                <h2>Champion</h2>
-                <p>Explore os Digimons Champion.</p>
-            </a>
+      <p id="mensagem-vazia" style="display: none">
+        Nenhum Digimon encontrado nesta categoria.
+      </p>
 
-            <a href="index.html?nivel=ultimate" class="card-categoria">
-                <img src="./assets/categorias/ultimate.png" alt="">
-                <h2>Ultimate</h2>
-                <p>Explore os Digimons Ultimate.</p>
-            </a>
-
-            <a href="index.html?nivel=mega" class="card-categoria">
-                <img src="./assets/categorias/mega.png" alt="">
-                <h2>Mega</h2>
-                <p>Descubra os Digimons Mega.</p>
-            </a>
-        </section>        
+      <a href="index.html" class="botao-voltar">
+        <span aria-hidden="true">←</span>
+        <span>Voltar ao início</span>
+      </a>
     </main>
 
     <script src="./js/script.js"></script>
-</body>
+  </body>
 </html>

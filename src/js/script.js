@@ -215,3 +215,103 @@ if (campoBusca && botaoBusca && listaCards) {
   });
 }
 
+const parametroNivel = new URLSearchParams(window.location.search).get("nivel");
+
+if (parametroNivel && listaCards) {
+  const nivelSelecionado = parametroNivel.toLowerCase();
+  const cards = listaCards.querySelectorAll(".card-digimon");
+
+  cards.forEach((card) => {
+    const nome = card.querySelector(".nome-digimon").textContent.trim();
+
+    const digimon = digimons.find(
+      (item) => item.nome.toLowerCase() === nome.toLowerCase(),
+    );
+
+    if (!digimon) {
+      card.style.display = "none";
+      return;
+    }
+
+    const corresponde =
+      nivelSelecionado === "todos" ||
+      digimon.nivel.toLowerCase() === nivelSelecionado;
+
+    card.style.display = corresponde ? "" : "none";
+  });
+
+  listaCards.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+}
+
+
+const listaDigimonsCategoria = document.querySelector(".lista-categorias");
+
+if (listaDigimonsCategoria) {
+    const parametros = new URLSearchParams(window.location.search);
+    const nivelSelecionado = (parametros.get("nivel") || "todos")
+        .toLowerCase();
+
+    const tituloCategoria = document.querySelector("#titulo-categoria");
+    const descricaoCategoria = document.querySelector("#descricao-categoria");
+    const mensagemVazia = document.querySelector("#mensagem-vazia");
+
+    const niveis = {
+        todos: {
+            titulo: "Todos os Digimons",
+            descricao: "Confira todos os Digimons disponíveis."
+        },
+        rookie: {
+            titulo: "Digimons Rookie",
+            descricao: "Confira os Digimons do nível Rookie."
+        },
+        champion: {
+            titulo: "Digimons Champion",
+            descricao: "Confira os Digimons do nível Champion."
+        },
+        ultimate: {
+            titulo: "Digimons Ultimate",
+            descricao: "Confira os Digimons do nível Ultimate."
+        },
+        mega: {
+            titulo: "Digimons Mega",
+            descricao: "Confira os Digimons do nível Mega."
+        }
+    };
+
+    const categoria = niveis[nivelSelecionado] || niveis.todos;
+
+    tituloCategoria.textContent = categoria.titulo;
+    descricaoCategoria.textContent = categoria.descricao;
+
+    const digimonsFiltrados = digimons.filter(digimon => {
+        return nivelSelecionado === "todos" ||
+            digimon.nivel.toLowerCase() === nivelSelecionado;
+    });
+
+    digimonsFiltrados.forEach(digimon => {
+        const card = document.createElement("a");
+        card.classList.add("card-digimon");
+        card.href = `detalhes.html?id=${digimon.id.replace("#", "")}`;
+
+        const id = document.createElement("p");
+        id.classList.add("id-digimon");
+        id.textContent = digimon.id;
+
+        const imagem = document.createElement("img");
+        imagem.src = digimon.imagem;
+        imagem.alt = digimon.nome;
+
+        const nome = document.createElement("h2");
+        nome.classList.add("nome-digimon");
+        nome.textContent = digimon.nome;
+
+        card.append(id, imagem, nome);
+        listaDigimonsCategoria.appendChild(card);
+    });
+
+    mensagemVazia.style.display =
+        digimonsFiltrados.length === 0 ? "block" : "none";
+}

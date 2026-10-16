@@ -1,0 +1,101 @@
+.lista-categorias {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    margin-top: 25px;
+}
+
+.lista-categorias .card-digimon {
+    width: 100%;
+    min-width: 0;
+    min-height: 260px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(145deg, var(--card), var(--fundo-secundario));
+    border: 1px solid var(--borda);
+    border-radius: 16px;
+    color: var(--texto);
+    text-align: center;
+    text-decoration: none;
+    transition: transform 0.2s, border-color 0.2s;
+    box-sizing: border-box;
+}
+
+.lista-categorias .card-digimon:hover {
+    transform: translateY(-5px);
+    border-color: var(--primaria);
+}
+
+.lista-categorias .card-digimon .id-digimon {
+    align-self: flex-start;
+    margin-bottom: 10px;
+    color: var(--texto-secundario);
+    font-size: 13px;
+}
+
+.lista-categorias .card-digimon img {
+    display: block;
+    width: 140px;
+    height: 140px;
+    margin: 10px auto;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+.lista-categorias .card-digimon .nome-digimon {
+    margin: 10px 0;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.lista-categorias .card-digimon .atributo {
+    width: 100%;
+    padding: 7px 10px;
+    background-color: var(--fundo);
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    color: var(--texto-secundario);
+    font-size: 13px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.botao-voltar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 16px;
+    margin-bottom: 25px;
+    background-color: var(--card);
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+    color: var(--texto);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
+}
+
+.botao-voltar span:first-child {
+    font-size: 22px;
+    line-height: 1;
+}
+
+.botao-voltar:hover {
+    background-color: var(--card-hover);
+    border-color: var(--primaria);
+    color: var(--secundaria);
+    transform: translateX(-3px);
+}
+
+.botao-voltar:focus-visible {
+    outline: 2px solid var(--secundaria);
+    outline-offset: 3px;
+}

@@ -12,13 +12,20 @@
         height: 130px;
     }
 
+    .content-categorias {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
     .categorias {
-        min-width: 130px;
+        min-width: 0;
+        min-height: 180px;
     }
 
     .categorias img {
-        width: 65px;
-        height: 65px;
+        width: 100%;
+        max-width: 130px;
+        height: 120px;
+        object-fit: contain;
     }
 
     .content-destaque {
@@ -51,7 +58,7 @@
 
     .cards-digimons {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 15px;
     }
 
@@ -114,22 +121,27 @@
     }
 
     .content-categorias {
-        gap: 10px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
     }
 
     .categorias {
-        min-width: calc(50% - 5px);
-        height: 120px;
+        min-width: 0;
+        min-height: 125px;
+        height: auto;
+        padding: 12px 8px;
+        gap: 8px;
     }
 
     .categorias img {
         width: 65px;
         height: 65px;
+        object-fit: contain;
     }
 
     .categorias h2 {
         font-size: 14px;
-        margin-bottom: 5px;
+        margin: 0;
     }
 
     .content-destaque {
@@ -284,13 +296,16 @@
         width: 94%;
     }
 
-    .content-categorias h1, .content-destaque h1, .content-digimon h1 {
+    .content-categorias h1,
+    .content-destaque h1,
+    .content-digimon h1 {
         font-size: 21px;
     }
 
     .categorias {
-        min-width: calc(50% - 5px);
-        height: 105px;
+        min-width: 0;
+        min-height: 110px;
+        padding: 10px 6px;
     }
 
     .categorias img {

@@ -1,0 +1,228 @@
+@media (max-width: 900px) {
+    .inicio {
+        width: 90%;
+    }
+
+    .favorite-person {
+        padding: 0 25px;
+    }
+
+    .favorite-person img {
+        width: 170px;
+        height: 130px;
+    }
+
+    .lista-categorias {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 15px;
+    }
+
+    .lista-categorias .card-digimon {
+        min-width: 0;
+        min-height: 240px;
+        padding: 16px;
+    }
+
+    .lista-categorias .card-digimon img {
+        width: 125px;
+        height: 125px;
+    }
+
+    .lista-categorias .card-digimon .nome-digimon {
+        font-size: 19px;
+    }
+
+    .lista-categorias .card-digimon .atributo {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 600px) {
+    .favorite-person {
+        height: 60px;
+        padding: 0 15px;
+    }
+
+    .favorite-person img {
+        width: 145px;
+        height: 105px;
+        margin-bottom: 8px;
+    }
+
+    .favorite-person-lista {
+        gap: 4px;
+    }
+
+    .favorite-person-lista a {
+        width: 35px;
+        height: 35px;
+    }
+
+    .inicio {
+        width: 92%;
+        padding: 25px 0 110px;
+    }
+
+    #titulo-categoria {
+        font-size: 23px;
+        line-height: 1.3;
+    }
+
+    #descricao-categoria {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .lista-categorias {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 20px;
+    }
+
+    .lista-categorias .card-digimon {
+        min-height: 215px;
+        padding: 12px;
+        border-radius: 12px;
+    }
+
+    .lista-categorias .card-digimon .id-digimon {
+        align-self: flex-start;
+        margin-bottom: 5px;
+        font-size: 11px;
+    }
+
+    .lista-categorias .card-digimon img {
+        width: 100px;
+        height: 100px;
+        margin: 8px auto;
+    }
+
+    .lista-categorias .card-digimon .nome-digimon {
+        margin: 8px 0;
+        font-size: 16px;
+        overflow-wrap: anywhere;
+    }
+
+    .lista-categorias .card-digimon .atributo {
+        padding: 6px;
+        font-size: 11px;
+        overflow-wrap: anywhere;
+    }
+
+    #mensagem-vazia {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .navegacao {
+        bottom: 8px;
+        width: 94%;
+        padding: 7px;
+    }
+
+    .navegacao-lista {
+        gap: 4px;
+    }
+
+    .navegacao-lista li {
+        font-size: 9px;
+    }
+
+    .navegacao-lista a {
+        width: 35px;
+        height: 30px;
+    }
+
+    .botao-voltar {
+        padding: 9px 12px;
+        margin-bottom: 20px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 400px) {
+    .favorite-person {
+        padding: 0 10px;
+    }
+
+    .favorite-person img {
+        width: 125px;
+        height: 90px;
+    }
+
+    .favorite-person-lista {
+        gap: 2px;
+    }
+
+    .favorite-person-lista a {
+        width: 32px;
+        height: 32px;
+    }
+
+    .inicio {
+        width: 94%;
+    }
+
+    #titulo-categoria {
+        font-size: 21px;
+    }
+
+    #descricao-categoria {
+        font-size: 13px;
+    }
+
+    .lista-categorias {
+        gap: 10px;
+    }
+
+    .lista-categorias .card-digimon {
+        min-height: 195px;
+        padding: 9px;
+    }
+
+    .lista-categorias .card-digimon img {
+        width: 85px;
+        height: 85px;
+    }
+
+    .lista-categorias .card-digimon .nome-digimon {
+        font-size: 14px;
+    }
+
+    .lista-categorias .card-digimon .atributo {
+        font-size: 10px;
+        padding: 5px;
+    }
+
+    .navegacao {
+        width: 96%;
+    }
+
+    .navegacao-lista li {
+        font-size: 8px;
+    }
+
+    .navegacao-lista a {
+        width: 30px;
+        height: 28px;
+    }
+}
+
+@media (max-width: 320px) {
+    .lista-categorias {
+        grid-template-columns: 1fr;
+    }
+
+    .lista-categorias .card-digimon {
+        min-height: 200px;
+    }
+
+    .lista-categorias .card-digimon img {
+        width: 110px;
+        height: 110px;
+    }
+
+    .lista-categorias .card-digimon .nome-digimon {
+        font-size: 16px;
+    }
+}
