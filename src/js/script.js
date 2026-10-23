@@ -107,49 +107,15 @@ if (botaoAnterior && botaoProximo) {
 
 const parametroId = new URLSearchParams(window.location.search).get("id");
 
-if (parametroId) {
-  const digimonDetalhes = digimons.find(
-    (digimon) => digimon.id === "#" + parametroId,
-  );
+if (parametroId){
+  const digimonLocal = digimons.find(
+    digimon => digimon.id === "#" + parametroId
+  )
 
-  if (digimonDetalhes) {
-    const imagemDetalhes = document.querySelector(".imagem-digimon img");
-    const nomeDetalhes = document.querySelector(".informacoes-digimon h2");
-    const idDetalhes = document.querySelector(
-      ".informacoes-digimon .id-digimon",
-    );
-    const nivelDetalhes = document.querySelector(
-      ".informacoes-digimon .nivel-digimon",
-    );
-    const tipoDetalhes = document.querySelector(
-      ".informacoes-digimon .tipo-digimon",
-    );
-    const areasDetalhes = document.querySelector(
-      ".informacoes-digimon .areas-digimon",
-    );
-    const descricaoDetalhes = document.querySelector(".descricao-digimon p");
-    const habilidadesDetalhes = document.querySelectorAll(
-      ".habilidades-digimon .habilidade",
-    );
-
-    imagemDetalhes.src = digimonDetalhes.imagem;
-    imagemDetalhes.alt = digimonDetalhes.nome;
-    nomeDetalhes.textContent = digimonDetalhes.nome;
-    idDetalhes.textContent = digimonDetalhes.id;
-    nivelDetalhes.textContent = "Nível: " + digimonDetalhes.nivel;
-    tipoDetalhes.textContent = "Tipo: " + digimonDetalhes.tipo;
-    areasDetalhes.textContent = "Áreas: " + digimonDetalhes.areas;
-
-    descricaoDetalhes.textContent = digimonDetalhes.descricao;
-
-    habilidadesDetalhes.forEach((habilidade, indice) => {
-      if (digimonDetalhes.habilidades[indice]) {
-        habilidade.querySelector("h3").textContent =
-          digimonDetalhes.habilidades[indice][0];
-        habilidade.querySelector("p").textContent =
-          digimonDetalhes.habilidades[indice][1];
-      }
-    });
+  if (digimonLocal){
+    buscarDigimonAPI(digimonLocal.nome)
+  } else{
+    buscarDigimonAPI(parametroId)
   }
 }
 
@@ -315,3 +281,69 @@ if (listaDigimonsCategoria) {
     mensagemVazia.style.display =
         digimonsFiltrados.length === 0 ? "block" : "none";
 }
+
+
+async function buscarDigimonAPI(id) {
+    const carregamento = document.querySelector("#estado-carregamento");
+    const mensagemErro = document.querySelector("#mensagem-erro");
+
+    carregamento.hidden = false;
+    mensagemErro.hidden = true;
+
+    try {
+        const resposta = await fetch(
+            `https://digi-api.com/api/v1/digimon/${encodeURIComponent(id)}`
+        );
+
+        if (!resposta.ok) {
+            throw new Error("Erro ao consultar a API");
+        }
+
+        const d = await resposta.json();
+
+        document.querySelector(".imagem-digimon img").src =
+            d.images?.[0]?.href || "";
+
+        document.querySelector(".imagem-digimon img").alt = d.name || "";
+
+        document.querySelector(".informacoes-digimon h2").textContent = d.name;
+
+        document.querySelector(".informacoes-digimon .id-digimon").textContent =
+            `ID: #${String(d.id).padStart(3, "0")}`;
+
+        document.querySelector(".informacoes-digimon .nivel-digimon").textContent =
+            "Nível: " + (d.levels?.map(x => x.level).filter(Boolean).join(", ") || "Não informado");
+
+        document.querySelector(".informacoes-digimon .tipo-digimon").textContent =
+            "Tipo: " + (d.types?.map(x => x.type).filter(Boolean).join(", ") || "Não informado");
+
+        document.querySelector(".informacoes-digimon .areas-digimon").textContent =
+            "Áreas: " + (d.fields?.map(x => x.field).filter(Boolean).join(", ") || "Não informado");
+
+        document.querySelector(".descricao-digimon p").textContent =
+            d.descriptions?.find(x => x.language === "en_us")?.description ||
+            d.descriptions?.[0]?.description || "Descrição indisponível.";
+
+        const habilidades = document.querySelectorAll(".habilidades-digimon .habilidade");
+
+        habilidades.forEach((el, i) => {
+            const h = d.skills?.[i];
+            el.hidden = !h;
+
+            if (h) {
+                el.querySelector("h3").textContent = h.skill || "Habilidade";
+                el.querySelector("p").textContent =
+                    h.description || "Descrição indisponível.";
+            }
+        });
+
+    } catch (erro) {
+        console.error(erro);
+        mensagemErro.textContent = "Erro ao carregar o Digimon. Tente novamente.";
+        mensagemErro.hidden = false;
+
+    } finally {
+        carregamento.hidden = true;
+    }
+}
+
