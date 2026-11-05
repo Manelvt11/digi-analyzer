@@ -401,3 +401,32 @@
     color: var(--secundaria);
     background-color: var(--card);
 }
+
+.paginacao-digimons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin: 30px 0;
+    flex-wrap: wrap;
+}
+
+.paginacao-digimons button {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font: inherit;
+    transition: opacity 0.2s ease;
+    background-color: var(--primaria);
+}
+
+.paginacao-digimons button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    color: #202955;
+}
+
+.paginacao-digimons span {
+    font-weight: bold;
+}

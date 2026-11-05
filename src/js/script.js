@@ -123,63 +123,150 @@ const campoBusca = document.querySelector(".content-busca input");
 const botaoBusca = document.querySelector(".content-busca button");
 const listaCards = document.querySelector(".cards-digimons");
 
-if (campoBusca && botaoBusca && listaCards) {
-  const cards = listaCards.querySelectorAll(".card-digimon");
+let paginaAtual = 0;
+let totalPaginas = 1;
+let termoAtual = "";
 
-  const mensagemBusca = document.createElement("p");
-  mensagemBusca.textContent = "Nenhum digimon encontrado";
-  mensagemBusca.style.display = "none";
-  mensagemBusca.style.gridColumn = "1 / -1";
-  mensagemBusca.style.textAlign = "center";
+const controlesPaginacao = document.createElement("div");
+controlesPaginacao.classList.add("paginacao-digimons");
+listaCards.insertAdjacentElement("afterend", controlesPaginacao);
 
-  listaCards.appendChild(mensagemBusca);
+async function pesquisarDigimons(pagina = 0) {
+    if (!listaCards) return;
 
-  function pesquisarDigimons() {
-    const termo = campoBusca.value.trim().toLowerCase();
-    let encontrados = 0;
+    paginaAtual = pagina;
+    listaCards.replaceChildren();
 
-    cards.forEach((card) => {
-      const nome = card
-        .querySelector(".nome-digimon")
-        .textContent.toLowerCase();
+    const carregando = document.createElement("p");
+    carregando.textContent = "Carregando Digimons...";
+    listaCards.appendChild(carregando);
 
-      const id = card
-        .querySelector(".id-digimon")
-        .textContent.replace("#", "")
-        .toLowerCase();
+    try {
+        const termo = termoAtual.trim();
+        let url;
 
-      const corresponde =
-        nome.includes(termo) || id.includes(termo.replace("#", ""));
+        if (termo && /^\d+$/.test(termo)) {
+            url = `https://digi-api.com/api/v1/digimon/${termo}`;
+        } else {
+            const parametros = new URLSearchParams({
+                page: paginaAtual,
+                pageSize: 20
+            });
 
-      card.style.display = corresponde ? "" : "none";
+            if (termo) {
+                parametros.set("name", termo);
+            }
 
-      if (corresponde) {
-        encontrados++;
-      }
-    });
+            url = `https://digi-api.com/api/v1/digimon?${parametros}`;
+        }
 
-    mensagemBusca.style.display = encontrados === 0 ? "block" : "none";
-  }
+        const resposta = await fetch(url);
 
-  campoBusca.addEventListener("input", pesquisarDigimons);
-  botaoBusca.addEventListener("click", () => {
-    pesquisarDigimons();
-    listaCards.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  });
-  campoBusca.addEventListener("keydown", (evento) => {
-    if (evento.key === "Enter") {
-      pesquisarDigimons();
+        if (!resposta.ok) {
+            throw new Error("Não foi possível consultar a API.");
+        }
 
-      listaCards.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
+        const dados = await resposta.json();
+
+        const digimonsEncontrados = termo && /^\d+$/.test(termo)
+            ? [dados]
+            : (dados.content || []);
+
+        totalPaginas = termo && /^\d+$/.test(termo)
+            ? 1
+            : (dados.pageable?.totalPages || 1);
+
+        renderizarCards(digimonsEncontrados);
+        renderizarPaginacao();
+
+    } catch (erro) {
+        listaCards.replaceChildren();
+
+        const mensagem = document.createElement("p");
+        mensagem.textContent =
+            "Não foi possível carregar os Digimons. Verifique sua conexão e tente novamente.";
+
+        listaCards.appendChild(mensagem);
+        controlesPaginacao.replaceChildren();
+
+        console.error(erro);
     }
-  });
 }
+
+function renderizarCards(digimonsEncontrados) {
+    listaCards.replaceChildren();
+
+    if (!digimonsEncontrados.length) {
+        const mensagem = document.createElement("p");
+        mensagem.textContent = "Nenhum Digimon encontrado.";
+        listaCards.appendChild(mensagem);
+        return;
+    }
+
+    digimonsEncontrados.forEach((digimon) => {
+        const card = document.createElement("a");
+        card.classList.add("card-digimon");
+        card.href = `detalhes.html?id=${digimon.id}`;
+
+        const imagem = document.createElement("img");
+        imagem.src = digimon.image || digimon.images?.[0]?.href || "";
+        imagem.alt = digimon.name;
+        imagem.loading = "lazy";
+
+        const nome = document.createElement("h3");
+        nome.textContent = digimon.name;
+
+        card.append(imagem, nome);
+        listaCards.appendChild(card);
+    });
+}
+
+function renderizarPaginacao() {
+    controlesPaginacao.replaceChildren();
+
+    if (termoAtual && /^\d+$/.test(termoAtual.trim())) {
+        return;
+    }
+
+    const botaoAnterior = document.createElement("button");
+    botaoAnterior.textContent = "Anterior";
+    botaoAnterior.disabled = paginaAtual <= 0;
+    botaoAnterior.addEventListener("click", () => {
+        pesquisarDigimons(paginaAtual - 1);
+    });
+
+    const indicador = document.createElement("span");
+    indicador.textContent = `Página ${paginaAtual + 1} de ${totalPaginas}`;
+
+    const botaoProxima = document.createElement("button");
+    botaoProxima.textContent = "Próxima";
+    botaoProxima.disabled = paginaAtual >= totalPaginas - 1;
+    botaoProxima.addEventListener("click", () => {
+        pesquisarDigimons(paginaAtual + 1);
+    });
+
+    controlesPaginacao.append(
+        botaoAnterior,
+        indicador,
+        botaoProxima
+    );
+}
+
+function iniciarBusca() {
+    termoAtual = campoBusca.value.trim();
+    pesquisarDigimons(0);
+}
+
+botaoBusca.addEventListener("click", iniciarBusca);
+
+campoBusca.addEventListener("keydown", (evento) => {
+    if (evento.key === "Enter") {
+        iniciarBusca();
+    }
+});
+
+pesquisarDigimons();
+
 
 const parametroNivel = new URLSearchParams(window.location.search).get("nivel");
 
