@@ -121,7 +121,7 @@ if (parametroId){
 
 const campoBusca = document.querySelector(".content-busca input");
 const botaoBusca = document.querySelector(".content-busca button");
-const listaCards = document.querySelector(".cards-digimons");
+const listaCards = document.querySelector(".cards-digimons:not(#cards-surpresa)");
 const listaDigimonsCategoria = document.querySelector(".lista-categorias");
 
 const listaAtual = listaCards || listaDigimonsCategoria;
@@ -399,3 +399,129 @@ async function buscarDigimonAPI(id) {
     }
 }
 
+const cardsSurpresa = document.querySelector("#cards-surpresa");
+const botaoSortear = document.querySelector("#sortear-novamente");
+const estadoCarregamento = document.querySelector("#estado-carregamento");
+const mensagemErro = document.querySelector("#mensagem-erro");
+
+async function sortearDigimons() {
+    if (!cardsSurpresa) return;
+
+    const quantidadePorPagina = 20;
+    const quantidadeSorteio = 12;
+
+    cardsSurpresa.replaceChildren();
+
+    mensagemErro.hidden = true;
+    estadoCarregamento.hidden = false;
+
+    botaoSortear.disabled = true;
+
+    try {
+        const respostaInicial = await fetch(
+            "https://digi-api.com/api/v1/digimon?page=0&pageSize=1"
+        );
+
+        if (!respostaInicial.ok) {
+            throw new Error("Não foi possível consultar a API.");
+        }
+
+        const dadosIniciais = await respostaInicial.json();
+        const totalDigimons = dadosIniciais.pageable?.totalElements;
+
+        if (!totalDigimons) {
+            throw new Error("Não foram encontrados Digimons.");
+        }
+
+        const indicesSorteados = new Set();
+
+        while (indicesSorteados.size < Math.min(quantidadeSorteio, totalDigimons)) {
+            const indice = Math.floor(Math.random() * totalDigimons);
+            indicesSorteados.add(indice);
+        }
+
+        const indices = Array.from(indicesSorteados);
+
+        const paginasNecessarias = [
+            ...new Set(
+                indices.map(indice =>
+                    Math.floor(indice / quantidadePorPagina)
+                )
+            )
+        ];
+
+        const resultadosPaginas = await Promise.all(
+            paginasNecessarias.map(async (pagina) => {
+                const resposta = await fetch(
+                    `https://digi-api.com/api/v1/digimon?page=${pagina}&pageSize=${quantidadePorPagina}`
+                );
+
+                if (!resposta.ok) {
+                    throw new Error("Erro ao buscar os Digimons.");
+                }
+
+                return {
+                    pagina,
+                    dados: await resposta.json()
+                };
+            })
+        );
+
+        const paginas = new Map();
+
+        resultadosPaginas.forEach(resultado => {
+            paginas.set(resultado.pagina, resultado.dados.content);
+        });
+
+        const digimonsSorteados = indices.map(indice => {
+            const pagina = Math.floor(indice / quantidadePorPagina);
+            const posicao = indice % quantidadePorPagina;
+
+            return paginas.get(pagina)?.[posicao];
+        });
+
+        if (digimonsSorteados.some(digimon => !digimon)) {
+            throw new Error("Não foi possível completar o sorteio.");
+        }
+
+        digimonsSorteados.forEach(digimon => {
+            const card = document.createElement("a");
+            card.classList.add("card-digimon");
+            card.href = `detalhes.html?id=${digimon.id}`;
+
+            const id = document.createElement("p");
+            id.classList.add("id-digimon");
+            id.textContent = `#${String(digimon.id).padStart(3, "0")}`;
+
+            const imagem = document.createElement("img");
+            imagem.src = digimon.image || digimon.images?.[0]?.href || "";
+            imagem.alt = digimon.name || "Digimon";
+            imagem.loading = "lazy";
+
+            const nome = document.createElement("h3");
+            nome.classList.add("nome-digimon");
+            nome.textContent = digimon.name;
+
+            card.append(id, imagem, nome);
+            cardsSurpresa.appendChild(card);
+        });
+
+    } catch (erro) {
+        console.error("Erro ao sortear Digimons:", erro);
+
+        mensagemErro.textContent =
+            "Não foi possível sortear os Digimons. Tente novamente.";
+
+        mensagemErro.hidden = false;
+
+    } finally {
+        estadoCarregamento.hidden = true;
+        botaoSortear.disabled = false;
+    }
+}
+
+botaoSortear?.addEventListener("click", sortearDigimons);
+
+if (cardsSurpresa) {
+    sortearDigimons();
+}

@@ -1,0 +1,173 @@
+.pagina-surpreenda {
+    width: 92%;
+    max-width: 1200px;
+    margin: 40px auto;
+}
+
+.cabecalho-surpreenda {
+    width: 100%;
+    height: 70px;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    background-color: var(--fundo-secundario);
+    border-bottom: 1px solid var(--borda);
+}
+
+.cabecalho-surpreenda a {
+    font-size: 28px;
+    color: var(--texto-secundario);
+    transition: color 0.2s;
+}
+
+.cabecalho-surpreenda a:hover {
+    color: var(--secundaria);
+}
+
+.cabecalho-surpreenda h1 {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.introducao-surpreenda {
+    padding: 40px 30px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 15px;
+    background: linear-gradient(135deg, var(--fundo-secundario), #252b58);
+    border: 1px solid var(--borda);
+    border-radius: 15px;
+}
+
+.introducao-surpreenda h2 {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--texto);
+}
+
+.introducao-surpreenda p {
+    max-width: 600px;
+    color: var(--texto-secundario);
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.introducao-surpreenda button {
+    margin-top: 10px;
+    padding: 12px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: var(--primaria);
+    color: var(--texto);
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.introducao-surpreenda button:hover {
+    background-color: #817aff;
+    transform: translateY(-2px);
+}
+
+.introducao-surpreenda button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.titulo-secao-surpresa {
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.titulo-secao-surpresa h2 {
+    font-size: 23px;
+    font-weight: 600;
+}
+
+.titulo-secao-surpresa span {
+    padding: 7px 12px;
+    background-color: var(--card);
+    color: var(--secundaria);
+    border: 1px solid var(--borda);
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.cards-digimons#cards-surpresa {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.cards-digimons#cards-surpresa .card-digimon {
+    min-width: 0;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    background-color: var(--card);
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+    color: var(--texto);
+    transition: transform 0.2s, background-color 0.2s, border-color 0.2s;
+}
+
+.cards-digimons#cards-surpresa .card-digimon:hover {
+    transform: translateY(-5px);
+    background-color: var(--card-hover);
+    border-color: var(--primaria);
+}
+
+.cards-digimons#cards-surpresa .id-digimon {
+    align-self: flex-start;
+    font-size: 13px;
+    color: var(--texto-secundario);
+}
+
+.cards-digimons#cards-surpresa .card-digimon img {
+    width: 100%;
+    max-width: 180px;
+    height: 170px;
+    object-fit: contain;
+}
+
+.cards-digimons#cards-surpresa .nome-digimon {
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+}
+
+
+#estado-carregamento,
+#mensagem-erro {
+    margin: 25px 0;
+    text-align: center;
+    font-size: 16px;
+}
+
+#estado-carregamento {
+    color: var(--secundaria);
+}
+
+#mensagem-erro {
+    color: #ff6464;
+}
+
+#estado-carregamento[hidden],
+#mensagem-erro[hidden] {
+    display: none;
+}

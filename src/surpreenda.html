@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"/>
+    <link rel="stylesheet" href="./css/global.css" />
+    <link rel="stylesheet" href="./css/surpreenda/surpreenda.css" />
+    <link rel="shortcut icon" href="./assets/logo_aba_site/logo.png" type="image/x-icon"/>
+    <title>Me Surpreenda</title>
+  </head>
+
+  <body>
+    <header class="cabecalho-surpreenda">
+      <a href="index.html" class="material-symbols-outlined">arrow_back</a>
+
+      <h1>Digi-Analyzer</h1>
+    </header>
+
+    <main class="pagina-surpreenda">
+      <section class="introducao-surpreenda">
+        <h2>Surpreenda-se!</h2>
+
+        <p>
+          Descubra novos Digimons! Prepare-se para conhecer 12 Digimons
+          escolhidos aleatoriamente
+        </p>
+
+        <button type="button" id="sortear-novamente">
+          <span class="material-symbols-outlined">shuffle</span>
+          Surpreender novamente
+        </button>
+      </section>
+
+      <section class="secao-digimons-surpresa">
+        <div class="titulo-secao-surpresa">
+          <h2>Seus Digimons surpresa</h2>
+          <span>12 descobertas</span>
+        </div>
+
+        <p id="estado-carregamento" role="status" hidden>
+          Sorteando Digimons...
+        </p>
+
+        <p id="mensagem-erro" role="alert" hidden></p>
+
+        <div class="cards-digimons" id="cards-surpresa"></div>
+      </section>
+    </main>
+
+    <script src="./js/script.js"></script>
+  </body>
+</html>
