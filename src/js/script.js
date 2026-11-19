@@ -130,11 +130,48 @@ let paginaAtual = 0;
 let totalPaginas = 1;
 let termoAtual = "";
 
+let ordenacaoAtual = "padrao";
+let resultadosAtuais = [];
+
 const parametros = new URLSearchParams(window.location.search);
 const nivelSelecionado = (parametros.get("nivel") || "todos").toLowerCase();
 
 
 let controlesPaginacao = null;
+
+let controlesOrdenacao = null;
+
+if (listaAtual) {
+    controlesOrdenacao = document.createElement("div");
+    controlesOrdenacao.classList.add("controles-ordenacao");
+
+    const labelOrdenacao = document.createElement("label");
+    labelOrdenacao.textContent = "Ordenar por:";
+
+    const seletorOrdenacao = document.createElement("select");
+    seletorOrdenacao.id = "ordenar-digimons";
+
+    seletorOrdenacao.innerHTML = `
+        <option value="padrao">Padrão</option>
+        <option value="nome">Nome (A-Z)</option>
+        <option value="id">ID (menor para maior)</option>
+    `;
+
+    ordenacaoAtual = localStorage.getItem("ordenacaoDigimons") || "padrao";
+    seletorOrdenacao.value = ordenacaoAtual;
+
+    seletorOrdenacao.addEventListener("change", function () {
+        ordenacaoAtual = this.value;
+        localStorage.setItem("ordenacaoDigimons", ordenacaoAtual);
+        renderizarCards(resultadosAtuais);
+    });
+
+    labelOrdenacao.htmlFor = "ordenar-digimons";
+    labelOrdenacao.appendChild(seletorOrdenacao);
+
+    listaAtual.insertAdjacentElement("beforebegin", controlesOrdenacao);
+    controlesOrdenacao.appendChild(labelOrdenacao);
+}
 
 if (listaAtual) {
     controlesPaginacao = document.createElement("div");
@@ -220,8 +257,26 @@ async function pesquisarDigimons(pagina = 0) {
     }
 }
 
+
 function renderizarCards(resultados) {
     listaAtual.replaceChildren();
+
+    resultadosAtuais = [...resultados];
+    
+    const resultadosOrdenados = [...resultadosAtuais];
+    
+    if (ordenacaoAtual === "nome") {
+        resultadosOrdenados.sort((a, b) =>
+            a.name.localeCompare(b.name, "pt-BR", {
+                sensitivity: "base",
+                numeric: true
+            })
+        );
+    }
+    
+    if (ordenacaoAtual === "id") {
+        resultadosOrdenados.sort((a, b) => Number(a.id) - Number(b.id));
+    }
 
     const mensagemVazia = document.querySelector("#mensagem-vazia");
 
@@ -229,18 +284,18 @@ function renderizarCards(resultados) {
         mensagemVazia.style.display = "none";
     }
 
-    if (resultados.length === 0) {
+    if (resultadosOrdenados.length === 0) {
         const mensagem = document.createElement("p");
+
         mensagem.textContent = listaDigimonsCategoria
             ? "Nenhum Digimon encontrado nesta categoria."
             : "Nenhum Digimon encontrado.";
 
         listaAtual.appendChild(mensagem);
-
         return;
     }
 
-    resultados.forEach((digimon) => {
+    resultadosOrdenados.forEach((digimon) => {
         const card = document.createElement("a");
         card.classList.add("card-digimon");
         card.href = `detalhes.html?id=${digimon.id}`;
@@ -279,6 +334,7 @@ function renderizarCards(resultados) {
         listaAtual.appendChild(card);
     });
 }
+
 
 function renderizarPaginacao(pesquisaPorId = false) {
     if (!controlesPaginacao) return;
